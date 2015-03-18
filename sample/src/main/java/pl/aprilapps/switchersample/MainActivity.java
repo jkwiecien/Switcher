@@ -2,31 +2,42 @@ package pl.aprilapps.switchersample;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.View;
 import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pl.aprilapps.switcher.OnErrorViewListener;
+import pl.aprilapps.switcher.Switcher;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-public class MainActivity extends ActionBarActivity implements Switcher.LabeledProgressViewOwner, Switcher.ContentViewOwner, Switcher.ClickableErrorViewOwner {
+public class MainActivity extends ActionBarActivity implements OnErrorViewListener {
+
+    private Switcher switcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+
+        switcher = new Switcher.Builder()
+                .withContentView(findViewById(R.id.content)) //ViewGroup holding your main content
+                .withErrorView(findViewById(R.id.error_view)) //ViewGroup holding your error view
+                .withProgressView(findViewById(R.id.progress_view)) //ViewGroup holding your progress view
+                .withErrorLabel((TextView) findViewById(R.id.error_label)) // TextView within your error ViewGroup that you want to change
+                .withProgressLabel((TextView) findViewById(R.id.progress_label)) // TextView within your progress ViewGroup that you want to change
+                .build();
     }
 
     @OnClick(R.id.progress_button)
     protected void onProgress() {
-        Switcher.showProgressView(this, "Loading data. Please wait.");
+        switcher.showProgressView("Loading data. Please wait.");
         Observable.just(new Object())
                 .delay(3, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.newThread())
@@ -34,7 +45,7 @@ public class MainActivity extends ActionBarActivity implements Switcher.LabeledP
                 .subscribe(new Subscriber<Object>() {
                     @Override
                     public void onCompleted() {
-                        Switcher.showContentView(MainActivity.this);
+                        switcher.showContentView();
                     }
 
                     @Override
@@ -52,7 +63,7 @@ public class MainActivity extends ActionBarActivity implements Switcher.LabeledP
 
     @OnClick(R.id.error_button)
     protected void onError() {
-        Switcher.showProgressView(this, "Loading data. Please wait.");
+        switcher.showProgressView("Loading data. Please wait.");
         Observable.just(new Object())
                 .delay(3, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.newThread())
@@ -60,7 +71,7 @@ public class MainActivity extends ActionBarActivity implements Switcher.LabeledP
                 .subscribe(new Subscriber<Object>() {
                     @Override
                     public void onCompleted() {
-                        Switcher.showErrorView(MainActivity.this, "Error. Click this to make it dissapear.", 0);
+                        switcher.showErrorView("Error. Click this to make it dissapear.", MainActivity.this, 0);
                     }
 
                     @Override
@@ -75,33 +86,9 @@ public class MainActivity extends ActionBarActivity implements Switcher.LabeledP
                 });
     }
 
-    @Override
-    public TextView getProgressViewLabel() {
-        return (TextView) findViewById(R.id.error_label);
-    }
-
-    @Override
-    public View getProgressView() {
-        return findViewById(R.id.progress_view);
-    }
-
-    @Override
-    public View getContentView() {
-        return findViewById(R.id.content);
-    }
-
-    @Override
-    public TextView getErrorLabel() {
-        return (TextView) findViewById(R.id.error_label);
-    }
 
     @Override
     public void onErrorViewClicked(int errorCode) {
-        Switcher.showContentView(this);
-    }
-
-    @Override
-    public View getErrorView() {
-        return findViewById(R.id.error_view);
+        switcher.showContentView();
     }
 }
