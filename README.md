@@ -4,7 +4,7 @@ Library that allows you to eaisly switch between your content, progress and erro
 #How to use it?
 1)  Build your layout like this. It's important to pack your content, progress and error view into the same ```FrameLayout```. It won't work otherwise.
 
-```
+```xml
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -51,7 +51,7 @@ Library that allows you to eaisly switch between your content, progress and erro
 ```
 
 2) Build your switcher (if you use it from activity, ```onCreate()``` will be the good place, if it's a fragment, use ```onCreateView()```)
-```
+```java
 switcher = new Switcher.Builder()
                 .withContentView(findViewById(R.id.content)) //ViewGroup holding your main content
                 .withErrorView(findViewById(R.id.error_view)) //ViewGroup holding your error view
@@ -62,7 +62,7 @@ switcher = new Switcher.Builder()
 ```
 
 3) Use the Switcher object to switch between your views
-```
+```java
 switcher.showContentView();
 switcher.showProgressView();
 switcher.showErrorView();
