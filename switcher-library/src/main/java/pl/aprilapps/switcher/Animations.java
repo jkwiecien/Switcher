@@ -1,4 +1,4 @@
-package pl.aprilapps.switchersample;
+package pl.aprilapps.switcher;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
