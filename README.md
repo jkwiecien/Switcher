@@ -67,3 +67,15 @@ switcher.showContentView();
 switcher.showProgressView();
 switcher.showErrorView();
 ```
+
+#Setup
+```
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+    
+    dependencies {
+    compile 'com.github.jkwiecien:Switcher:1.0.4'
+
+}
+```
