@@ -70,11 +70,11 @@ switcher.showErrorView();
 
 #Setup
 ```
-    repositories {
-        maven { url "https://jitpack.io" }
-    }
+repositories {
+    maven { url "https://jitpack.io" }
+}
     
-    dependencies {
+dependencies {
     compile 'com.github.jkwiecien:Switcher:1.0.4'
 
 }
