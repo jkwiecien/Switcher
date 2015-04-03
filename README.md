@@ -1,6 +1,10 @@
 # What is it?
 Library that allows you to eaisly switch between your content, progress and error view. It does it with smooth crossfade animation. It also lets you add on click listener to the error view.
   You only show content, progress or error view. The switcher finds out what's currently visible and hides it.
+  
+  
+  ![alt tag](http://recordit.co/eMdCTknEmO)
+  
 #How to use it?
 1)  Build your layout like this. It's important to pack your content, progress and error view into the same ```FrameLayout```. It won't work otherwise.
 
