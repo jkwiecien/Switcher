@@ -3,7 +3,7 @@ Library that allows you to eaisly switch between your content, progress and erro
   You only show content, progress or error view. The switcher finds out what's currently visible and hides it.
   
   
-![Alt preview](http://g.recordit.co/eMdCTknEmO.gif "Preview")
+<img src="http://g.recordit.co/eMdCTknEmO.gif" height="340" />
   
 #How to use it?
 1)  Build your layout like this. It's important to pack your content, progress and error view into the same ```FrameLayout```. It won't work otherwise.
