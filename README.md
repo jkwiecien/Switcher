@@ -79,15 +79,16 @@ repositories {
 }
     
 dependencies {
-    compile 'com.github.jkwiecien:Switcher:1.0.3'
+    compile 'com.github.jkwiecien:Switcher:1.0.4'
 
 }
 ```
 
 If you wan't to use blur view, you also need to modify your app ```defaultConfig```:
-    ```
+
+```
     defaultConfig {
         renderscriptTargetApi 22
         renderscriptSupportModeEnabled true
     }
-    ```
+```
