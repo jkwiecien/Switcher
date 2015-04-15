@@ -1,5 +1,7 @@
 package pl.aprilapps.switcher;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -12,6 +14,7 @@ public class Switcher {
     private View contentView;
     private View errorView;
     private View progressView;
+    private View blurView;
 
     private TextView errorLabel;
     private TextView progressLabel;
@@ -29,6 +32,10 @@ public class Switcher {
 
     private void setErrorView(View errorView) {
         this.errorView = errorView;
+    }
+
+    public void setBlurView(View blurView) {
+        this.blurView = blurView;
     }
 
     private void setProgressView(View progressView) {
@@ -59,6 +66,11 @@ public class Switcher {
 
         public Builder withProgressView(View progressView) {
             switcher.setProgressView(progressView);
+            return this;
+        }
+
+        public Builder withBlurView(View blurView) {
+            switcher.setBlurView(blurView);
             return this;
         }
 
@@ -104,6 +116,16 @@ public class Switcher {
 
         if (errorView != viewToHide && errorView.getVisibility() != View.VISIBLE) {
             Animations.crossfadeViews(viewToHide, errorView);
+        }
+    }
+
+    public void showBlurView(View viewToBlur) {
+        View viewToHide = getCurrentlyVisibleView(errorView);
+
+        if (blurView != viewToHide && blurView.getVisibility() != View.VISIBLE) {
+            Bitmap blurBitmap = BlurUtils.takeBlurredScreenshot(viewToBlur);
+            blurView.setBackgroundDrawable(new BitmapDrawable(blurView.getResources(), blurBitmap));
+            Animations.crossfadeViews(viewToHide, blurView);
         }
     }
 
