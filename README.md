@@ -1,5 +1,5 @@
 # What is it?
-Library that allows you to eaisly switch between your content, progress and error view. It does it with smooth crossfade animation. It also lets you add on click listener to the error view.
+Library that allows you to eaisly switch between your content, progress, error and blur view. It does it with smooth crossfade animation. It also lets you add on click listener to the error view.
   You only show content, progress or error view. The switcher finds out what's currently visible and hides it.
   
   
@@ -83,3 +83,11 @@ dependencies {
 
 }
 ```
+
+If you wan't to use blur view, you also need to modify your app ```defaultConfig```:
+    ```
+    defaultConfig {
+        renderscriptTargetApi 22
+        renderscriptSupportModeEnabled true
+    }
+    ```
