@@ -60,6 +60,7 @@ switcher = new Switcher.Builder()
                 .withContentView(findViewById(R.id.content)) //ViewGroup holding your main content
                 .withErrorView(findViewById(R.id.error_view)) //ViewGroup holding your error view
                 .withProgressView(findViewById(R.id.progress_view)) //ViewGroup holding your progress view
+                .withBlurView(findViewById(R.id.blur_view)) //View overlaying another view, that you'd like to blur
                 .withErrorLabel((TextView) findViewById(R.id.error_label)) // TextView within your error ViewGroup that you want to change
                 .withProgressLabel((TextView) findViewById(R.id.progress_label)) // TextView within your progress ViewGroup that you want to change
                 .build();
