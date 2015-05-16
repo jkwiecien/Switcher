@@ -80,7 +80,7 @@ repositories {
 }
     
 dependencies {
-    compile 'com.github.jkwiecien:Switcher:1.0.4'
+    compile 'com.github.jkwiecien:Switcher:1.0.5'
 
 }
 ```
