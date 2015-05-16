@@ -1,5 +1,5 @@
 # What is it?
-Library that allows you to eaisly switch between your content, progress and error view. It does it with smooth crossfade animation. It also lets you add on click listener to the error view.
+Library that allows you to eaisly switch between your content, progress, error and blur view. It does it with smooth crossfade animation. It also lets you add on click listener to the error view.
   You only show content, progress or error view. The switcher finds out what's currently visible and hides it.
   
   
@@ -60,6 +60,7 @@ switcher = new Switcher.Builder()
                 .withContentView(findViewById(R.id.content)) //ViewGroup holding your main content
                 .withErrorView(findViewById(R.id.error_view)) //ViewGroup holding your error view
                 .withProgressView(findViewById(R.id.progress_view)) //ViewGroup holding your progress view
+                .withBlurView(findViewById(R.id.blur_view)) //View overlaying another view, that you'd like to blur
                 .withErrorLabel((TextView) findViewById(R.id.error_label)) // TextView within your error ViewGroup that you want to change
                 .withProgressLabel((TextView) findViewById(R.id.progress_label)) // TextView within your progress ViewGroup that you want to change
                 .build();
@@ -79,7 +80,16 @@ repositories {
 }
     
 dependencies {
-    compile 'com.github.jkwiecien:Switcher:1.0.3'
+    compile 'com.github.jkwiecien:Switcher:1.0.4'
 
 }
+```
+
+If you wan't to use blur view, you also need to modify your app ```defaultConfig```:
+
+```
+    defaultConfig {
+        renderscriptTargetApi 22
+        renderscriptSupportModeEnabled true
+    }
 ```
