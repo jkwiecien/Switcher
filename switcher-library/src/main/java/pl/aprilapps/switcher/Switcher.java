@@ -85,9 +85,16 @@ public class Switcher {
         }
 
         public Switcher build() {
+            switcher.setupViews();
             return switcher;
         }
+    }
 
+    private void setupViews() {
+        if (contentView != null) contentView.setVisibility(View.VISIBLE);
+        if (errorView != null) errorView.setVisibility(View.INVISIBLE);
+        if (progressView != null) progressView.setVisibility(View.INVISIBLE);
+        if (blurView != null) blurView.setVisibility(View.INVISIBLE);
     }
 
     private static View getCurrentlyVisibleView(View viewToShow) {

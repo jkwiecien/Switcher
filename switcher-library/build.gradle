@@ -9,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0.4"
+        versionName "1.0.5"
         renderscriptTargetApi 22
         renderscriptSupportModeEnabled true
     }
@@ -23,6 +23,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.android.support:appcompat-v7:22.1.1'
 
 }
