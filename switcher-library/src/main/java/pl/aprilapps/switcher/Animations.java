@@ -17,6 +17,13 @@ public class Animations {
         fadeOut(viewToHide, animDuration);
     }
 
+    public static void crossfadeViews(final View viewToHide, final View viewToShow, int animDuration) {
+        if (viewToShow == null) return;
+
+        fadeIn(viewToShow, animDuration);
+        fadeOut(viewToHide, animDuration);
+    }
+
     public static void fadeIn(final View view, int animDuration) {
         if (view == null) return;
 
@@ -40,4 +47,5 @@ public class Animations {
             }
         });
     }
+
 }

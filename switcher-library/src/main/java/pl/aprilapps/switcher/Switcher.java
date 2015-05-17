@@ -3,7 +3,6 @@ package pl.aprilapps.switcher;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 /**
@@ -20,13 +19,13 @@ public class Switcher {
     private TextView progressLabel;
 
     private int errorCode;
+    private StateHelper stateHelper = new StateHelper();
 
     private Switcher() {
 
     }
 
-
-    private void setContentView(View contentView) {
+    private void setContentView(final View contentView) {
         this.contentView = contentView;
     }
 
@@ -91,48 +90,44 @@ public class Switcher {
     }
 
     private void setupViews() {
-        if (contentView != null) contentView.setVisibility(View.VISIBLE);
-        if (errorView != null) errorView.setVisibility(View.INVISIBLE);
-        if (progressView != null) progressView.setVisibility(View.INVISIBLE);
-        if (blurView != null) blurView.setVisibility(View.INVISIBLE);
+        if (contentView != null) stateHelper.setVisibility(contentView, View.VISIBLE);
+        if (errorView != null) stateHelper.setVisibility(errorView, View.INVISIBLE);
+        if (progressView != null) stateHelper.setVisibility(progressView, View.INVISIBLE);
+        if (blurView != null) stateHelper.setVisibility(blurView, View.INVISIBLE);
     }
 
-    private static View getCurrentlyVisibleView(View viewToShow) {
-        try {
-            FrameLayout parent = (FrameLayout) viewToShow.getParent();
-            for (int i = 0; i < parent.getChildCount(); i++) {
-                View child = parent.getChildAt(i);
-                if (child.getVisibility() == View.VISIBLE) return child;
-            }
-        } catch (ClassCastException e) {
-
-        }
-        throw new ClassCastException("All state views (content|error|progress) should have the same FrameLayout parent");
-    }
 
     public void showContentView() {
-        View viewToHide = getCurrentlyVisibleView(contentView);
+        View viewToHide = stateHelper.getCurrentlyVisibleView(contentView);
 
-        if (contentView != viewToHide && contentView.getVisibility() != View.VISIBLE) {
-            Animations.crossfadeViews(viewToHide, contentView);
+        if (contentView != viewToHide) {
+            stateHelper.crossfadeViews(viewToHide, contentView);
+        }
+    }
+
+    public void showProgressView() {
+        View viewToHide = stateHelper.getCurrentlyVisibleView(progressView);
+
+        if (progressView != viewToHide) {
+            stateHelper.crossfadeViews(viewToHide, progressView);
         }
     }
 
     public void showErrorView() {
-        View viewToHide = getCurrentlyVisibleView(errorView);
+        View viewToHide = stateHelper.getCurrentlyVisibleView(errorView);
 
-        if (errorView != viewToHide && errorView.getVisibility() != View.VISIBLE) {
-            Animations.crossfadeViews(viewToHide, errorView);
+        if (errorView != viewToHide) {
+            stateHelper.crossfadeViews(viewToHide, errorView);
         }
     }
 
     public void showBlurView(View viewToBlur) {
-        View viewToHide = getCurrentlyVisibleView(errorView);
+        View viewToHide = stateHelper.getCurrentlyVisibleView(blurView);
 
-        if (blurView != viewToHide && blurView.getVisibility() != View.VISIBLE) {
+        if (blurView != viewToHide) {
             Bitmap blurBitmap = BlurUtils.takeBlurredScreenshot(viewToBlur);
             blurView.setBackgroundDrawable(new BitmapDrawable(blurView.getResources(), blurBitmap));
-            Animations.crossfadeViews(viewToHide, blurView);
+            stateHelper.crossfadeViews(viewToHide, blurView);
         }
     }
 
@@ -167,13 +162,6 @@ public class Switcher {
         showErrorView(listener, errorCode);
     }
 
-    public void showProgressView() {
-        View viewToHide = getCurrentlyVisibleView(progressView);
-
-        if (progressView != viewToHide && progressView.getVisibility() != View.VISIBLE) {
-            Animations.crossfadeViews(viewToHide, progressView);
-        }
-    }
 
     public void showProgressView(String errorMessage) {
         if (errorLabel == null) {
