@@ -27,6 +27,11 @@ public class Animations {
             public void onAnimationEnd(Animator animation) {
                 view.setVisibility(View.VISIBLE);
             }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                view.setVisibility(View.VISIBLE);
+            }
         });
     }
 
@@ -36,6 +41,11 @@ public class Animations {
         view.animate().alpha(0f).setDuration(animDuration).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
+                view.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
                 view.setVisibility(View.INVISIBLE);
             }
         });

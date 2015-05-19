@@ -1,8 +1,10 @@
 package pl.aprilapps.switcher;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -98,16 +100,26 @@ public class Switcher {
     }
 
     private static View getCurrentlyVisibleView(View viewToShow) {
-        try {
-            FrameLayout parent = (FrameLayout) viewToShow.getParent();
+
+        ViewParent parentView = viewToShow.getParent();
+
+        if (parentView instanceof FrameLayout) {
+
+            FrameLayout parent = (FrameLayout) parentView;
+            View visibleView = null;
+
             for (int i = 0; i < parent.getChildCount(); i++) {
                 View child = parent.getChildAt(i);
-                if (child.getVisibility() == View.VISIBLE) return child;
-            }
-        } catch (ClassCastException e) {
+                child.animate().cancel();
 
+                if (child.getVisibility() == View.VISIBLE) visibleView = child;
+            }
+            if (visibleView != null) return visibleView;
+            else throw new Resources.NotFoundException("Visible view not found");
+        } else {
+            throw new ClassCastException("All state views (content|error|progress|blur) should have the same FrameLayout parent");
         }
-        throw new ClassCastException("All state views (content|error|progress) should have the same FrameLayout parent");
+
     }
 
     public void showContentView() {
