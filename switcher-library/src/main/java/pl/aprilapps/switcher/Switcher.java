@@ -3,6 +3,8 @@ package pl.aprilapps.switcher;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
@@ -22,6 +24,8 @@ public class Switcher {
     private TextView progressLabel;
 
     private int errorCode;
+
+    private Pair<Animations.FadeInListener, Animations.FadeOutListener> currentAnimators;
 
     private Switcher() {
 
@@ -110,8 +114,6 @@ public class Switcher {
 
             for (int i = 0; i < parent.getChildCount(); i++) {
                 View child = parent.getChildAt(i);
-                child.animate().cancel();
-
                 if (child.getVisibility() == View.VISIBLE) visibleView = child;
             }
             if (visibleView != null) return visibleView;
@@ -123,29 +125,56 @@ public class Switcher {
     }
 
     public void showContentView() {
+        Log.i(Switcher.class.getSimpleName(), "showContentView");
+        cancelCurrentAnimators();
         View viewToHide = getCurrentlyVisibleView(contentView);
 
         if (contentView != viewToHide && contentView.getVisibility() != View.VISIBLE) {
-            Animations.crossfadeViews(viewToHide, contentView);
+            currentAnimators = Animations.crossfadeViews(viewToHide, contentView);
+        }
+    }
+
+
+    public void showProgressView() {
+        Log.i(Switcher.class.getSimpleName(), "showProgressView");
+        cancelCurrentAnimators();
+        View viewToHide = getCurrentlyVisibleView(progressView);
+
+        if (progressView != viewToHide && progressView.getVisibility() != View.VISIBLE) {
+            currentAnimators = Animations.crossfadeViews(viewToHide, progressView);
         }
     }
 
     public void showErrorView() {
+        Log.i(Switcher.class.getSimpleName(), "showErrorView");
+        cancelCurrentAnimators();
         View viewToHide = getCurrentlyVisibleView(errorView);
 
         if (errorView != viewToHide && errorView.getVisibility() != View.VISIBLE) {
-            Animations.crossfadeViews(viewToHide, errorView);
+            currentAnimators = Animations.crossfadeViews(viewToHide, errorView);
         }
     }
 
     public void showBlurView(View viewToBlur) {
+        Log.i(Switcher.class.getSimpleName(), "showBlurView");
+        cancelCurrentAnimators();
         View viewToHide = getCurrentlyVisibleView(errorView);
 
         if (blurView != viewToHide && blurView.getVisibility() != View.VISIBLE) {
             Bitmap blurBitmap = BlurUtils.takeBlurredScreenshot(viewToBlur);
             blurView.setBackgroundDrawable(new BitmapDrawable(blurView.getResources(), blurBitmap));
-            Animations.crossfadeViews(viewToHide, blurView);
+            currentAnimators = Animations.crossfadeViews(viewToHide, blurView);
         }
+    }
+
+    private void cancelCurrentAnimators() {
+        if (currentAnimators == null) return;
+
+        Animations.FadeInListener fadeInListener = currentAnimators.first;
+        if (fadeInListener != null) fadeInListener.onAnimationEnd();
+
+        Animations.FadeOutListener fadeOutListener = currentAnimators.second;
+        if (fadeOutListener != null) fadeOutListener.onAnimationEnd();
     }
 
     public void showErrorView(String errorMessage) {
@@ -177,14 +206,6 @@ public class Switcher {
 
         errorLabel.setText(errorMessage);
         showErrorView(listener, errorCode);
-    }
-
-    public void showProgressView() {
-        View viewToHide = getCurrentlyVisibleView(progressView);
-
-        if (progressView != viewToHide && progressView.getVisibility() != View.VISIBLE) {
-            Animations.crossfadeViews(viewToHide, progressView);
-        }
     }
 
     public void showProgressView(String errorMessage) {
