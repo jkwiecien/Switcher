@@ -134,6 +134,17 @@ public class Switcher {
         }
     }
 
+    public void showContentViewImmediately() {
+        Log.i(Switcher.class.getSimpleName(), "showContentView");
+        cancelCurrentAnimators();
+        View viewToHide = getCurrentlyVisibleView(contentView);
+
+        if (contentView != viewToHide && contentView.getVisibility() != View.VISIBLE) {
+            contentView.setVisibility(View.VISIBLE);
+            viewToHide.setVisibility(View.INVISIBLE);
+        }
+    }
+
 
     public void showProgressView() {
         Log.i(Switcher.class.getSimpleName(), "showProgressView");
@@ -142,6 +153,17 @@ public class Switcher {
 
         if (progressView != viewToHide && progressView.getVisibility() != View.VISIBLE) {
             currentAnimators = Animations.crossfadeViews(viewToHide, progressView);
+        }
+    }
+
+    public void showProgressViewImmediately() {
+        Log.i(Switcher.class.getSimpleName(), "showProgressView");
+        cancelCurrentAnimators();
+        View viewToHide = getCurrentlyVisibleView(progressView);
+
+        if (progressView != viewToHide && progressView.getVisibility() != View.VISIBLE) {
+            progressView.setVisibility(View.VISIBLE);
+            viewToHide.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -155,6 +177,17 @@ public class Switcher {
         }
     }
 
+    public void showErrorViewImmediately() {
+        Log.i(Switcher.class.getSimpleName(), "showErrorView");
+        cancelCurrentAnimators();
+        View viewToHide = getCurrentlyVisibleView(errorView);
+
+        if (errorView != viewToHide && errorView.getVisibility() != View.VISIBLE) {
+            errorView.setVisibility(View.VISIBLE);
+            viewToHide.setVisibility(View.INVISIBLE);
+        }
+    }
+
     public void showBlurView(View viewToBlur) {
         Log.i(Switcher.class.getSimpleName(), "showBlurView");
         cancelCurrentAnimators();
@@ -164,6 +197,19 @@ public class Switcher {
             Bitmap blurBitmap = BlurUtils.takeBlurredScreenshot(viewToBlur);
             blurView.setBackgroundDrawable(new BitmapDrawable(blurView.getResources(), blurBitmap));
             currentAnimators = Animations.crossfadeViews(viewToHide, blurView);
+        }
+    }
+
+    public void showBlurViewImmediately(View viewToBlur) {
+        Log.i(Switcher.class.getSimpleName(), "showBlurView");
+        cancelCurrentAnimators();
+        View viewToHide = getCurrentlyVisibleView(errorView);
+
+        if (blurView != viewToHide && blurView.getVisibility() != View.VISIBLE) {
+            Bitmap blurBitmap = BlurUtils.takeBlurredScreenshot(viewToBlur);
+            blurView.setBackgroundDrawable(new BitmapDrawable(blurView.getResources(), blurBitmap));
+            blurView.setVisibility(View.VISIBLE);
+            viewToHide.setVisibility(View.INVISIBLE);
         }
     }
 
