@@ -3,7 +3,7 @@ Library that allows you to eaisly switch between your content, progress, error a
   You only show content, progress or error view. The switcher finds out what's currently visible and hides it.
   
   
-<img src="http://g.recordit.co/mdqiMgA8iQ.gif" height="340" />
+<img src="http://g.recordit.co/LAshoSUNxi.gif" height="340" />
   
 #How to use it?
 1)  Build your layout like this. It's important to pack your content, progress and error view into the same ```FrameLayout```. It won't work otherwise.
@@ -16,6 +16,19 @@ Library that allows you to eaisly switch between your content, progress, error a
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        
+        <LinearLayout
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:visibility="invisible">
+
+            <-- your empty placeholder subviews goes here -->
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/progress_view"
@@ -63,15 +76,20 @@ switcher = new Switcher.Builder()
                 .withBlurView(findViewById(R.id.blur_view)) //View overlaying another view, that you'd like to blur
                 .withErrorLabel((TextView) findViewById(R.id.error_label)) // TextView within your error ViewGroup that you want to change
                 .withProgressLabel((TextView) findViewById(R.id.progress_label)) // TextView within your progress ViewGroup that you want to change
+                .withEmptyView(findViewById(R.id.empty_view)) //SOme empty placeholder we display on lists for example if there are no results
                 .build();
 ```
 
-3) Use the Switcher object to switch between your views
+3) Use the Switcher object to switch between your views. This will use the crossfade animation.
 ```java
 switcher.showContentView();
 switcher.showProgressView();
 switcher.showErrorView();
+switcher.showEmptyView();
+switcher.showBlurView(View viewToBlur);
 ```
+
+If you rather switch views immediately without animation use ```showProgressViewImmediately()``` and corresponding for other states.
 
 #Setup
 ```
@@ -80,7 +98,7 @@ repositories {
 }
     
 dependencies {
-    compile ('com.github.jkwiecien:Switcher:1.1.0'){
+    compile ('com.github.jkwiecien:Switcher:1.1.1'){
         exclude module: 'appcompat-v7'
     }
 }
