@@ -16,6 +16,19 @@ Library that allows you to eaisly switch between your content, progress, error a
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        
+        <LinearLayout
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:visibility="invisible">
+
+            <-- your empty placeholder subviews goes here -->
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/progress_view"
@@ -63,6 +76,7 @@ switcher = new Switcher.Builder()
                 .withBlurView(findViewById(R.id.blur_view)) //View overlaying another view, that you'd like to blur
                 .withErrorLabel((TextView) findViewById(R.id.error_label)) // TextView within your error ViewGroup that you want to change
                 .withProgressLabel((TextView) findViewById(R.id.progress_label)) // TextView within your progress ViewGroup that you want to change
+                .withEmptyView(findViewById(R.id.empty_view)) //SOme empty placeholder we display on lists for example if there are no results
                 .build();
 ```
 
