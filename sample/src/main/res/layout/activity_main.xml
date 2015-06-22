@@ -9,40 +9,60 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/progress_view"
-            android:orientation="vertical"
+            android:id="@+id/empty_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:visibility="invisible"
-            android:padding="20dp">
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/empty_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:text="There is nothing to be shown. Instead enjoy this placeholder screen to avoid confusion :)"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/progress_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:visibility="invisible">
 
             <ProgressBar
+                android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/progressBar"
                 android:layout_gravity="center_horizontal" />
 
             <TextView
+                android:id="@+id/progress_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Loading. Please wait..."
-                android:id="@+id/progress_label"
+                android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:textSize="22sp"
-                android:layout_gravity="center_horizontal" />
+                android:text="Loading. Please wait..."
+                android:textSize="22sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/error_view"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:gravity="center"
             android:layout_height="match_parent"
-            android:visibility="invisible"
-            android:padding="20dp">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:visibility="invisible">
 
             <ImageView
                 android:layout_width="250dp"
@@ -50,13 +70,13 @@
                 android:src="@drawable/error" />
 
             <TextView
+                android:id="@+id/error_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Error message"
-                android:id="@+id/error_label"
+                android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:textSize="22sp"
-                android:layout_gravity="center_horizontal" />
+                android:text="Error message"
+                android:textSize="22sp" />
 
         </LinearLayout>
 
@@ -74,8 +94,8 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/sample_image"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/sample_image" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -101,6 +121,12 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="Blur example" />
+
+                <Button
+                    android:id="@+id/empty_button"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Empty view example" />
 
             </LinearLayout>
         </FrameLayout>

@@ -37,6 +37,7 @@ public class MainActivity extends ActionBarActivity implements OnErrorViewListen
                 .withBlurView(findViewById(R.id.blur_view)) //View overlaying another view, that you'd like to blur
                 .withErrorLabel((TextView) findViewById(R.id.error_label)) // TextView within your error ViewGroup that you want to change
                 .withProgressLabel((TextView) findViewById(R.id.progress_label)) // TextView within your progress ViewGroup that you want to change
+                .withEmptyView(findViewById(R.id.empty_view)) //SOme empty placeholder we display on lists for example if there are no results
                 .build();
     }
 
@@ -114,6 +115,11 @@ public class MainActivity extends ActionBarActivity implements OnErrorViewListen
 
                     }
                 });
+    }
+
+    @OnClick(R.id.empty_button)
+    protected void onEmpty() {
+        switcher.showEmptyView();
     }
 
 

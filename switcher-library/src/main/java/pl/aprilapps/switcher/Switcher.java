@@ -17,6 +17,7 @@ public class Switcher {
 
     private View contentView;
     private View errorView;
+    private View emptyView;
     private View progressView;
     private View blurView;
 
@@ -36,6 +37,10 @@ public class Switcher {
 
     private void setErrorView(View errorView) {
         this.errorView = errorView;
+    }
+
+    private void setEmptyView(View emptyView) {
+        this.emptyView = emptyView;
     }
 
     public void setBlurView(View blurView) {
@@ -68,6 +73,11 @@ public class Switcher {
             return this;
         }
 
+        public Builder withEmptyView(View emptyView) {
+            switcher.setEmptyView(emptyView);
+            return this;
+        }
+
         public Builder withProgressView(View progressView) {
             switcher.setProgressView(progressView);
             return this;
@@ -97,6 +107,7 @@ public class Switcher {
     private void setupViews() {
         if (contentView != null) contentView.setVisibility(View.VISIBLE);
         if (errorView != null) errorView.setVisibility(View.INVISIBLE);
+        if (emptyView != null) emptyView.setVisibility(View.INVISIBLE);
         if (progressView != null) progressView.setVisibility(View.INVISIBLE);
         if (blurView != null) blurView.setVisibility(View.INVISIBLE);
     }
@@ -182,6 +193,27 @@ public class Switcher {
 
         if (errorView != viewToHide && errorView.getVisibility() != View.VISIBLE) {
             errorView.setVisibility(View.VISIBLE);
+            viewToHide.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void showEmptyView() {
+        Log.i(Switcher.class.getSimpleName(), "showEmptyView");
+        cancelCurrentAnimators();
+        View viewToHide = getCurrentlyVisibleView(emptyView);
+
+        if (emptyView != viewToHide && emptyView.getVisibility() != View.VISIBLE) {
+            currentAnimators = Animations.crossfadeViews(viewToHide, emptyView);
+        }
+    }
+
+    public void showEmptyViewImmediately() {
+        Log.i(Switcher.class.getSimpleName(), "showEmptyView");
+        cancelCurrentAnimators();
+        View viewToHide = getCurrentlyVisibleView(emptyView);
+
+        if (emptyView != viewToHide && emptyView.getVisibility() != View.VISIBLE) {
+            emptyView.setVisibility(View.VISIBLE);
             viewToHide.setVisibility(View.INVISIBLE);
         }
     }
