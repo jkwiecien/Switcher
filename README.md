@@ -3,7 +3,7 @@ Library that allows you to eaisly switch between your content, progress, error a
   You only show content, progress or error view. The switcher finds out what's currently visible and hides it.
   
   
-<img src="http://g.recordit.co/mdqiMgA8iQ.gif" height="340" />
+<img src="http://g.recordit.co/LAshoSUNxi.gif" height="340" />
   
 #How to use it?
 1)  Build your layout like this. It's important to pack your content, progress and error view into the same ```FrameLayout```. It won't work otherwise.
@@ -80,12 +80,16 @@ switcher = new Switcher.Builder()
                 .build();
 ```
 
-3) Use the Switcher object to switch between your views
+3) Use the Switcher object to switch between your views. This will use the crossfade animation.
 ```java
 switcher.showContentView();
 switcher.showProgressView();
 switcher.showErrorView();
+switcher.showEmptyView();
+switcher.showBlurView(View viewToBlur);
 ```
+
+If you rather switch views immediately without animation use ```showProgressViewImmediately()``` and corresponding for other states.
 
 #Setup
 ```
