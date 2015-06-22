@@ -76,7 +76,7 @@ public class MainActivity extends ActionBarActivity implements OnErrorViewListen
                 .subscribe(new Subscriber<Object>() {
                     @Override
                     public void onCompleted() {
-                        switcher.showErrorView("Error. Click this to make it dissapear.", MainActivity.this, 0);
+                        switcher.showErrorView("Error. Click this to make it dissapear.", MainActivity.this);
                     }
 
                     @Override
@@ -118,7 +118,7 @@ public class MainActivity extends ActionBarActivity implements OnErrorViewListen
 
 
     @Override
-    public void onErrorViewClicked(int errorCode) {
+    public void onErrorViewClicked() {
         switcher.showContentView();
     }
 }

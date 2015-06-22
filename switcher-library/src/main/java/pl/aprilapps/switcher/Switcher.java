@@ -23,8 +23,6 @@ public class Switcher {
     private TextView errorLabel;
     private TextView progressLabel;
 
-    private int errorCode;
-
     private Pair<Animations.FadeInListener, Animations.FadeOutListener> currentAnimators;
 
     private Switcher() {
@@ -232,26 +230,24 @@ public class Switcher {
         showErrorView();
     }
 
-    public void showErrorView(final OnErrorViewListener listener, final int errorCode) {
-        this.errorCode = errorCode;
-
+    public void showErrorView(final OnErrorViewListener listener) {
         errorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onErrorViewClicked(errorCode);
+                listener.onErrorViewClicked();
                 view.setOnClickListener(null);
             }
         });
         showErrorView();
     }
 
-    public void showErrorView(String errorMessage, final OnErrorViewListener listener, final int errorCode) {
+    public void showErrorView(String errorMessage, final OnErrorViewListener listener) {
         if (errorLabel == null) {
             throw new NullPointerException("You have to build Switcher using withErrorLabel() method");
         }
 
         errorLabel.setText(errorMessage);
-        showErrorView(listener, errorCode);
+        showErrorView(listener);
     }
 
     public void showProgressView(String errorMessage) {
