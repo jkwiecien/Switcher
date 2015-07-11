@@ -55,13 +55,21 @@ public class Animations {
         }
 
         @Override
+        public void onAnimationStart(Animator animation) {
+            super.onAnimationStart(animation);
+            Log.i(Switcher.class.getSimpleName(), String.format("fadeIn START: %s", view.getContext().getResources().getResourceName(view.getId())));
+        }
+
+        @Override
         public void onAnimationEnd(Animator animation) {
             onAnimationEnd();
         }
 
         public void onAnimationEnd() {
-            Log.i(Switcher.class.getSimpleName(), String.format("fadeIn END: %s", view.getContext().getResources().getResourceName(view.getId())));
-            view.setVisibility(View.VISIBLE);
+            if (view.getVisibility() != View.VISIBLE) {
+                Log.i(Switcher.class.getSimpleName(), String.format("fadeIn END: %s", view.getContext().getResources().getResourceName(view.getId())));
+                view.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -74,13 +82,21 @@ public class Animations {
         }
 
         @Override
+        public void onAnimationStart(Animator animation) {
+            super.onAnimationStart(animation);
+            Log.i(Switcher.class.getSimpleName(), String.format("fadeOut START: %s", view.getContext().getResources().getResourceName(view.getId())));
+        }
+
+        @Override
         public void onAnimationEnd(Animator animation) {
             onAnimationEnd();
         }
 
         public void onAnimationEnd() {
-            Log.i(Switcher.class.getSimpleName(), String.format("fadeOut END: %s", view.getContext().getResources().getResourceName(view.getId())));
-            view.setVisibility(View.INVISIBLE);
+            if (view.getVisibility() == View.VISIBLE) {
+                Log.i(Switcher.class.getSimpleName(), String.format("fadeOut END: %s", view.getContext().getResources().getResourceName(view.getId())));
+                view.setVisibility(View.INVISIBLE);
+            }
         }
     }
 }
