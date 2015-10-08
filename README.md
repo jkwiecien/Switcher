@@ -1,3 +1,5 @@
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Switcher-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/2603)
+
 # What is it?
 Library that allows you to eaisly switch between your content, progress, error and blur view. It does it with smooth crossfade animation. It also lets you add on click listener to the error view.
   You only show content, progress or error view. The switcher finds out what's currently visible and hides it.
