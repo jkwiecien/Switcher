@@ -94,7 +94,7 @@ switcher.showBlurView(View viewToBlur);
 If you rather switch views immediately without animation use ```showProgressViewImmediately()``` and corresponding for other states.
 
 #Setup
-```
+```groovy
 repositories {
     maven { url "https://jitpack.io" }
 }
@@ -108,7 +108,7 @@ dependencies {
 
 If you wan't to use blur view, you also need to modify your app ```defaultConfig```:
 
-```
+```groovy
     defaultConfig {
         renderscriptTargetApi 22
         renderscriptSupportModeEnabled true
