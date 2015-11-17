@@ -100,7 +100,7 @@ repositories {
 }
     
 dependencies {
-    compile ('com.github.jkwiecien:Switcher:1.1.3'){
+    compile ('com.github.jkwiecien:Switcher:1.1.4'){
         exclude module: 'appcompat-v7'
     }
 }
