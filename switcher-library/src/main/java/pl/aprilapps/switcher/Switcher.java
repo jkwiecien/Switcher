@@ -6,8 +6,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 /**
@@ -116,9 +116,9 @@ public class Switcher {
 
         ViewParent parentView = viewToShow.getParent();
 
-        if (parentView instanceof FrameLayout) {
+        if (parentView instanceof ViewGroup) {
 
-            FrameLayout parent = (FrameLayout) parentView;
+            ViewGroup parent = (ViewGroup) parentView;
             View visibleView = null;
 
             for (int i = 0; i < parent.getChildCount(); i++) {
@@ -128,7 +128,7 @@ public class Switcher {
             if (visibleView != null) return visibleView;
             else throw new Resources.NotFoundException("Visible view not found");
         } else {
-            throw new ClassCastException("All state views (content|error|progress|blur) should have the same FrameLayout parent");
+            throw new ClassCastException("All state views (content|error|progress|blur) should have the same ViewGroup parent");
         }
 
     }
