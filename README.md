@@ -5,7 +5,7 @@ Library that allows you to eaisly switch between your content, progress, error a
   You only show content, progress or error view. The switcher finds out what's currently visible and hides it.
   
   
-<img src="http://g.recordit.co/LAshoSUNxi.gif" height="340" />
+<img src="http://g.recordit.co/Gav0lfPXMV.gif" height="340" />
   
 #How to use it?
 1)  Build your layout like this. It's important to pack your content, progress and error view into the same ```FrameLayout```. It won't work otherwise.
@@ -100,20 +100,10 @@ repositories {
 }
     
 dependencies {
-    compile ('com.github.jkwiecien:Switcher:1.1.4'){
-        exclude module: 'appcompat-v7'
-    }
+    compile 'com.github.jkwiecien:Switcher:2.0.0'
 }
 ```
 
-If you wan't to use blur view, you also need to modify your app ```defaultConfig```:
-
-```groovy
-    defaultConfig {
-        renderscriptTargetApi 22
-        renderscriptSupportModeEnabled true
-    }
-```
 
 License
 =======
