@@ -113,10 +113,6 @@ public class Switcher {
             errorView.setVisibility(View.INVISIBLE);
         }
 
-        for (View errorView : errorViews) {
-            errorView.setVisibility(View.INVISIBLE);
-        }
-
         for (View progressView : progressViews) {
             progressView.setVisibility(View.INVISIBLE);
         }
@@ -161,17 +157,17 @@ public class Switcher {
                 view.setVisibility(View.VISIBLE);
             } else {
                 Animations.FadeListener animator = Animations.fadeIn(view, animDuration);
-                runningAnimators.add(animator);
+                if (animator != null) runningAnimators.add(animator);
             }
         }
 
-        List<View> viewsToHide = membersExcludingGroup(contentViews);
+        List<View> viewsToHide = membersExcludingGroup(groupToShow);
         for (View view : viewsToHide) {
             if (immediately) {
                 view.setVisibility(View.INVISIBLE);
             } else {
                 Animations.FadeListener animator = Animations.fadeOut(view, animDuration);
-                runningAnimators.add(animator);
+                if (animator != null) runningAnimators.add(animator);
             }
         }
     }
@@ -237,6 +233,7 @@ public class Switcher {
 
     public void showErrorView(final OnErrorViewListener listener) {
         for (View errorView : errorViews) {
+            errorView.setClickable(true);
             errorView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

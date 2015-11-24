@@ -10,18 +10,6 @@ import android.view.View;
  */
 public class Animations {
 
-//    public static Pair<FadeInListener, FadeOutListener> crossfadeViews(final View viewToHide, final View viewToShow) {
-//        if (viewToShow == null)
-//            return new Pair<FadeInListener, FadeOutListener>(null, null);
-//        int animDuration = viewToShow.getContext().getResources().getInteger(android.R.integer.config_shortAnimTime);
-//
-//
-//        FadeInListener fadeInListener = fadeIn(viewToShow, animDuration);
-//        FadeOutListener fadeOutListener = fadeOut(viewToHide, animDuration);
-//
-//        return new Pair<FadeInListener, FadeOutListener>(fadeInListener, fadeOutListener);
-//    }
-
     public static FadeInListener fadeIn(final View view, int animDuration) {
         if (view == null || view.getVisibility() == View.VISIBLE) return null;
 
@@ -45,19 +33,14 @@ public class Animations {
         return listener;
     }
 
-    public static class FadeListener extends AnimatorListenerAdapter {
+    public static abstract class FadeListener extends AnimatorListenerAdapter {
         protected View view;
 
         public FadeListener(View view) {
             this.view = view;
         }
 
-        protected void onAnimationEnd() {
-            if (view.getVisibility() != View.VISIBLE) {
-                Log.i(Switcher.class.getSimpleName(), String.format("fadeIn END: %s", view.getContext().getResources().getResourceName(view.getId())));
-                view.setVisibility(View.VISIBLE);
-            }
-        }
+        public abstract void onAnimationEnd();
     }
 
     public static class FadeInListener extends FadeListener {
@@ -76,6 +59,13 @@ public class Animations {
         public void onAnimationEnd(Animator animation) {
             onAnimationEnd();
         }
+
+        public void onAnimationEnd() {
+            if (view.getVisibility() != View.VISIBLE) {
+                Log.i(Switcher.class.getSimpleName(), String.format("fadeIn END: %s", view.getContext().getResources().getResourceName(view.getId())));
+                view.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     public static class FadeOutListener extends FadeListener {
@@ -93,6 +83,13 @@ public class Animations {
         @Override
         public void onAnimationEnd(Animator animation) {
             onAnimationEnd();
+        }
+
+        public void onAnimationEnd() {
+            if (view.getVisibility() == View.VISIBLE) {
+                Log.i(Switcher.class.getSimpleName(), String.format("fadeOut END: %s", view.getContext().getResources().getResourceName(view.getId())));
+                view.setVisibility(View.INVISIBLE);
+            }
         }
     }
 }

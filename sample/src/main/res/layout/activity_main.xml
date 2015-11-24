@@ -1,137 +1,51 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <FrameLayout
+    <include layout="@layout/view_progress" />
+
+    <include layout="@layout/view_error" />
+
+    <include layout="@layout/view_empty" />
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/empty_view"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="20dp"
-            android:visibility="invisible">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-            <TextView
-                android:id="@+id/empty_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:text="There is nothing to be shown. Instead enjoy this placeholder screen to avoid confusion :)"
-                android:textSize="22sp" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="14dp"
+            android:src="@drawable/ic_message_white_24dp"
+            app:layout_anchor="@id/recycler_view"
+            app:layout_anchorGravity="bottom|right|end" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/progress_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="20dp"
-            android:visibility="invisible">
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal" />
-
-            <TextView
-                android:id="@+id/progress_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:text="Loading. Please wait..."
-                android:textSize="22sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/error_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="20dp"
-            android:visibility="invisible">
-
-            <ImageView
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:src="@drawable/error" />
-
-            <TextView
-                android:id="@+id/error_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:text="Error message"
-                android:textSize="22sp" />
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/blur_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible" />
-
-        <FrameLayout
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/sample_image" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/progress_button"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:text="Progress example" />
-
-                <Button
-                    android:id="@+id/error_button"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="Error example" />
-
-                <Button
-                    android:id="@+id/blur_button"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="Blur example" />
-
-                <Button
-                    android:id="@+id/empty_button"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="Empty view example" />
-
-            </LinearLayout>
-        </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
 
-    </FrameLayout>
-
-</RelativeLayout>
+</FrameLayout>
