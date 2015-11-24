@@ -1,84 +1,78 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Switcher-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/2603)
 
 # What is it?
-Library that allows you to eaisly switch between your content, progress, error and blur view. It does it with smooth crossfade animation. It also lets you add on click listener to the error view.
-  You only show content, progress or error view. The switcher finds out what's currently visible and hides it.
+Library that allows you to eaisly switch between your content, progress, empty placeholder view. It does it with smooth crossfade animation. It also lets you add on click listener to the error view.
+  You only show content, progress or error view. The switcher finds out what's currently visible and hides it. You can hide/show multiple views at once.
   
   
-<img src="http://g.recordit.co/LAshoSUNxi.gif" height="340" />
+<img src="http://g.recordit.co/Gav0lfPXMV.gif" height="340" />
   
 #How to use it?
-1)  Build your layout like this. It's important to pack your content, progress and error view into the same ```FrameLayout```. It won't work otherwise.
+1)  It's important that all parent views of the layout arr registered with switcher as progress, error or empty view.
 
+Here is example layout:
 ```xml
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <include layout="@layout/view_progress" />
+
+    <include layout="@layout/view_error" />
+
+    <include layout="@layout/view_empty" />
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        
-        <LinearLayout
-            android:id="@+id/empty_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="20dp"
-            android:visibility="invisible">
 
-            <-- your empty placeholder subviews goes here -->
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/progress_view"
-            android:orientation="vertical"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="invisible">
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <-- your progress subviews goes here -->
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        </LinearLayout>
+        </android.support.design.widget.AppBarLayout>
 
-        <LinearLayout
-            android:id="@+id/error_view"
-            android:orientation="vertical"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-            <-- your error subviews goes here -->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="14dp"
+            android:src="@drawable/ic_message_white_24dp"
+            app:layout_anchor="@id/recycler_view"
+            app:layout_anchorGravity="bottom|right|end" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <-- your content goes here -->
-
-        </LinearLayout>
-    </FrameLayout>
-
-</RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</FrameLayout>
 ```
 
 2) Build your switcher (if you use it from activity, ```onCreate()``` will be the good place, if it's a fragment, use ```onCreateView()```)
 ```java
-switcher = new Switcher.Builder()
-                .withContentView(findViewById(R.id.content)) //ViewGroup holding your main content
-                .withErrorView(findViewById(R.id.error_view)) //ViewGroup holding your error view
-                .withProgressView(findViewById(R.id.progress_view)) //ViewGroup holding your progress view
-                .withBlurView(findViewById(R.id.blur_view)) //View overlaying another view, that you'd like to blur
-                .withErrorLabel((TextView) findViewById(R.id.error_label)) // TextView within your error ViewGroup that you want to change
-                .withProgressLabel((TextView) findViewById(R.id.progress_label)) // TextView within your progress ViewGroup that you want to change
-                .withEmptyView(findViewById(R.id.empty_view)) //SOme empty placeholder we display on lists for example if there are no results
+        switcher = new Switcher.Builder(this)
+                .addContentView(findViewById(R.id.recycler_view)) //content member
+                .addContentView(findViewById(R.id.fab)) //content member
+                .addErrorView(findViewById(R.id.error_view)) //error view member
+                .addProgressView(findViewById(R.id.progress_view)) //progress view member
+                .setErrorLabel((TextView) findViewById(R.id.error_label)) // TextView within your error member group that you want to change
+                .setProgressLabel((TextView) findViewById(R.id.progress_label)) // TextView within your progress member group that you want to change
+                .addEmptyView(findViewById(R.id.empty_view)) //empty placeholder member
                 .build();
 ```
 
@@ -88,7 +82,6 @@ switcher.showContentView();
 switcher.showProgressView();
 switcher.showErrorView();
 switcher.showEmptyView();
-switcher.showBlurView(View viewToBlur);
 ```
 
 If you rather switch views immediately without animation use ```showProgressViewImmediately()``` and corresponding for other states.
@@ -100,20 +93,10 @@ repositories {
 }
     
 dependencies {
-    compile ('com.github.jkwiecien:Switcher:1.1.4'){
-        exclude module: 'appcompat-v7'
-    }
+    compile 'com.github.jkwiecien:Switcher:2.0.0'
 }
 ```
 
-If you wan't to use blur view, you also need to modify your app ```defaultConfig```:
-
-```groovy
-    defaultConfig {
-        renderscriptTargetApi 22
-        renderscriptSupportModeEnabled true
-    }
-```
 
 License
 =======
