@@ -10,6 +10,27 @@ import android.view.View;
  */
 public class Animations {
 
+    public static CrossfadeListeners crossfadeViews(final View viewToHide, final View viewToShow) {
+        return crossfadeViews(viewToHide, viewToShow);
+    }
+
+    public static CrossfadeListeners crossfadeViews(final View viewToHide, final View viewToShow, int animDuration) {
+        if (viewToShow == null) return null;
+        FadeInListener fadeInListener = fadeIn(viewToShow, animDuration);
+        FadeOutListener fadeOutListener = fadeOut(viewToHide, animDuration);
+        return new CrossfadeListeners(fadeOutListener, fadeInListener);
+    }
+
+    public static FadeInListener fadeIn(final View view) {
+        int animDuration = view.getContext().getResources().getInteger(android.R.integer.config_shortAnimTime);
+        return fadeIn(view, animDuration);
+    }
+
+    public static FadeOutListener fadeOut(final View view) {
+        int animDuration = view.getContext().getResources().getInteger(android.R.integer.config_shortAnimTime);
+        return fadeOut(view, animDuration);
+    }
+
     public static FadeInListener fadeIn(final View view, int animDuration) {
         if (view == null || view.getVisibility() == View.VISIBLE) return null;
 
@@ -90,6 +111,24 @@ public class Animations {
                 Log.i(Switcher.class.getSimpleName(), String.format("fadeOut END: %s", view.getContext().getResources().getResourceName(view.getId())));
                 view.setVisibility(View.INVISIBLE);
             }
+        }
+    }
+
+    public static class CrossfadeListeners {
+        private FadeOutListener fadeOutListener;
+        private FadeInListener fadeInListener;
+
+        public CrossfadeListeners(FadeOutListener fadeOutListener, FadeInListener fadeInListener) {
+            this.fadeOutListener = fadeOutListener;
+            this.fadeInListener = fadeInListener;
+        }
+
+        public FadeOutListener getFadeOutListener() {
+            return fadeOutListener;
+        }
+
+        public FadeInListener getFadeInListener() {
+            return fadeInListener;
         }
     }
 }
