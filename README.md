@@ -93,7 +93,7 @@ repositories {
 }
     
 dependencies {
-    compile 'com.github.jkwiecien:Switcher:2.0.3'
+    compile 'com.github.jkwiecien:Switcher:2.0.5'
 }
 ```
 
