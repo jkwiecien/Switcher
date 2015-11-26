@@ -2,6 +2,7 @@ package pl.aprilapps.switcher;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
@@ -11,11 +12,20 @@ import android.view.View;
 public class Animations {
 
     public static CrossfadeListeners crossfadeViews(final View viewToHide, final View viewToShow) {
-        return crossfadeViews(viewToHide, viewToShow);
+        Context context;
+        if (viewToHide != null) {
+            context = viewToHide.getContext();
+        } else if (viewToShow != null) {
+            context = viewToShow.getContext();
+        } else {
+            return null;
+        }
+        int animDuration = context.getResources().getInteger(android.R.integer.config_shortAnimTime);
+        return crossfadeViews(viewToHide, viewToShow, animDuration);
     }
 
     public static CrossfadeListeners crossfadeViews(final View viewToHide, final View viewToShow, int animDuration) {
-        if (viewToShow == null) return null;
+        if (viewToShow == null || viewToHide == null) return null;
         FadeInListener fadeInListener = fadeIn(viewToShow, animDuration);
         FadeOutListener fadeOutListener = fadeOut(viewToHide, animDuration);
         return new CrossfadeListeners(fadeOutListener, fadeInListener);

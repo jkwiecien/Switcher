@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
+        classpath 'com.android.tools.build:gradle:1.5.0'
         classpath 'com.github.dcendents:android-maven-plugin:1.2'
     }
 }
@@ -20,5 +20,5 @@ ext {
     buildToolsVersion = "23.0.1"
     minSdkVersion = 14
     versionCode = 16
-    versionName = "2.0.3"
+    versionName = "git --git-dir=${rootDir}/.git --work-tree=${rootDir} describe --tags --abbrev=0".execute().text.trim()
 }
