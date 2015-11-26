@@ -1,14 +1,14 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Switcher-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/2603)
 
 # What is it?
-Library that allows you to eaisly switch between your content, progress, empty placeholder view. It does it with smooth crossfade animation. It also lets you add on click listener to the error view.
+Library that allows you to easily switch between your content, progress, empty placeholder view. It does it with smooth crossfade animation. It also lets you add on click listener to the error view.
   You only show content, progress or error view. The switcher finds out what's currently visible and hides it. You can hide/show multiple views at once.
   
   
 <img src="http://g.recordit.co/Gav0lfPXMV.gif" height="340" />
   
 #How to use it?
-1)  It's important that all parent views of the layout arr registered with switcher as progress, error or empty view.
+1)  It's important that all parent views of the layout are registered with switcher as progress, error or empty view.
 
 Here is example layout:
 ```xml
