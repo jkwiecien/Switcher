@@ -19,6 +19,6 @@ ext {
     targetSdkVersion = 21
     buildToolsVersion = "23.0.1"
     minSdkVersion = 14
-    versionCode = 16
+    versionCode = "git --git-dir=${rootDir}/.git --work-tree=${rootDir} rev-list HEAD --first-parent --count".execute().text.trim().toInteger()
     versionName = "git --git-dir=${rootDir}/.git --work-tree=${rootDir} describe --tags --abbrev=0".execute().text.trim()
 }
