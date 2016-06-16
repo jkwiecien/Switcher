@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static pl.aprilapps.switcher.guava.Preconditions.checkNotNull;
+
 /**
  * Created by Jacek Kwiecień on 14.03.15.
  */
@@ -69,31 +71,37 @@ public class Switcher {
         }
 
         public Builder addContentView(View contentView) {
+            checkNotNull(contentView, "Provided content view is null");
             switcher.addContentView(contentView);
             return this;
         }
 
         public Builder addErrorView(View errorView) {
+            checkNotNull(errorView, "Provided error view is null");
             switcher.addErrorView(errorView);
             return this;
         }
 
         public Builder addEmptyView(View emptyView) {
+            checkNotNull(emptyView, "Provided empty view is null");
             switcher.addEmptyView(emptyView);
             return this;
         }
 
         public Builder addProgressView(View progressView) {
+            checkNotNull(progressView, "Provided progress view is null");
             switcher.addProgressView(progressView);
             return this;
         }
 
         public Builder setProgressLabel(TextView progressLabel) {
+            checkNotNull(progressLabel, "Provided progress label is null");
             switcher.setProgressLabel(progressLabel);
             return this;
         }
 
         public Builder setErrorLabel(TextView errorLabel) {
+            checkNotNull(errorLabel, "Provided error label is null");
             switcher.setErrorLabel(errorLabel);
             return this;
         }
