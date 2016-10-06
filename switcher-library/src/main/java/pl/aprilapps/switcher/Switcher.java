@@ -24,6 +24,7 @@ public class Switcher {
     private TextView errorLabel;
     private TextView progressLabel;
     private int animDuration = 300;
+    private boolean errorShown;
 
     private List<Animations.FadeListener> runningAnimators = new ArrayList<>();
 
@@ -158,6 +159,9 @@ public class Switcher {
     }
 
     private void showGroup(List<View> groupToShow, boolean immediately) {
+        if (groupToShow.equals(errorViews)) errorShown = true;
+        else errorShown = false;
+
         cancelCurrentAnimators();
 
         for (View view : groupToShow) {
@@ -201,6 +205,15 @@ public class Switcher {
         showGroup(progressViews, true);
     }
 
+    public void showProgressView(String progressMessage) {
+        if (errorLabel == null) {
+            throw new NullPointerException("You have to build Switcher using withProgressLabel() method");
+        }
+
+        progressLabel.setText(progressMessage);
+        showProgressView();
+    }
+
     public void showErrorView() {
         Log.i(Switcher.class.getSimpleName(), "showErrorView");
         showGroup(errorViews, false);
@@ -209,25 +222,6 @@ public class Switcher {
     public void showErrorViewImmediately() {
         Log.i(Switcher.class.getSimpleName(), "showErrorView");
         showGroup(errorViews, true);
-    }
-
-    public void showEmptyView() {
-        Log.i(Switcher.class.getSimpleName(), "showEmptyView");
-        showGroup(emptyViews, false);
-    }
-
-    public void showEmptyViewImmediately() {
-        Log.i(Switcher.class.getSimpleName(), "showEmptyView");
-        showGroup(emptyViews, true);
-    }
-
-    private void cancelCurrentAnimators() {
-        Iterator<Animations.FadeListener> it = runningAnimators.iterator();
-        while (it.hasNext()) {
-            Animations.FadeListener animator = it.next();
-            animator.onAnimationEnd();
-            it.remove();
-        }
     }
 
     public void showErrorView(String errorMessage) {
@@ -262,13 +256,26 @@ public class Switcher {
         showErrorView(listener);
     }
 
-    public void showProgressView(String errorMessage) {
-        if (errorLabel == null) {
-            throw new NullPointerException("You have to build Switcher using withProgressLabel() method");
-        }
-
-        progressLabel.setText(errorMessage);
-        showProgressView();
+    public void showEmptyView() {
+        Log.i(Switcher.class.getSimpleName(), "showEmptyView");
+        showGroup(emptyViews, false);
     }
 
+    public void showEmptyViewImmediately() {
+        Log.i(Switcher.class.getSimpleName(), "showEmptyView");
+        showGroup(emptyViews, true);
+    }
+
+    private void cancelCurrentAnimators() {
+        Iterator<Animations.FadeListener> it = runningAnimators.iterator();
+        while (it.hasNext()) {
+            Animations.FadeListener animator = it.next();
+            animator.onAnimationEnd();
+            it.remove();
+        }
+    }
+
+    public boolean isShowingError() {
+        return errorShown;
+    }
 }
