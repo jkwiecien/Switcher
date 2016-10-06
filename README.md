@@ -1,4 +1,4 @@
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Switcher-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/2603)[![](https://jitpack.io/v/jkwiecien/Switcher.svg)](https://jitpack.io/#jkwiecien/Switcher)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Switcher-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/2603) [![](https://jitpack.io/v/jkwiecien/Switcher.svg)](https://jitpack.io/#jkwiecien/Switcher)
 
 # What is it?
 Library that allows you to easily switch between your content, progress, empty placeholder view. It does it with smooth crossfade animation. It also lets you add on click listener to the error view.
