@@ -1,1 +1,1 @@
-include ':sample', ':switcher-library'
+include ':sample', ':library'

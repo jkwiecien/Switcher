@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/empty_view"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/emptyView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="20dp"
-    android:visibility="invisible">
+    android:visibility="invisible"
+    tools:visibility="visible">
 
     <TextView
-        android:id="@+id/empty_label"
+        android:id="@+id/emptyLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:text="There is nothing to be shown. Instead enjoy this placeholder screen to avoid confusion :)"
         android:textSize="22sp" />
+
+    <Button
+        android:id="@+id/dismissEmptyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Take me back to demo" />
 
 </LinearLayout>

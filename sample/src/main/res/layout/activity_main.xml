@@ -30,7 +30,7 @@
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
@@ -42,7 +42,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="14dp"
             android:src="@drawable/ic_message_white_24dp"
-            app:layout_anchor="@id/recycler_view"
+            app:layout_anchor="@id/recyclerView"
             app:layout_anchorGravity="bottom|right|end" />
 
     </android.support.design.widget.CoordinatorLayout>

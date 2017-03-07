@@ -1,4 +1,4 @@
-package pl.aprilapps.switchersample;
+package pl.aprilapps.switcher.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import pl.aprilapps.switcher.OnErrorViewListener;
+import butterknife.OnClick;
 import pl.aprilapps.switcher.Switcher;
 import rx.Observable;
 import rx.Subscriber;
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
 
-    @Bind(R.id.recycler_view)
+    @Bind(R.id.recyclerView)
     protected RecyclerView recyclerView;
 
     private Switcher switcher;
@@ -38,13 +38,14 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         switcher = new Switcher.Builder(this)
-                .addContentView(findViewById(R.id.recycler_view)) //content member
+                .addContentView(findViewById(R.id.recyclerView)) //content member
                 .addContentView(findViewById(R.id.fab)) //content member
-                .addErrorView(findViewById(R.id.error_view)) //error view member
-                .addProgressView(findViewById(R.id.progress_view)) //progress view member
-                .setErrorLabel((TextView) findViewById(R.id.error_label)) // TextView within your error member group that you want to change
-                .setProgressLabel((TextView) findViewById(R.id.progress_label)) // TextView within your progress member group that you want to change
-                .addEmptyView(findViewById(R.id.empty_view)) //empty placeholder member
+                .addErrorView(findViewById(R.id.errorView)) //error view member
+                .addProgressView(findViewById(R.id.progressView)) //progress view member
+                .setErrorLabel((TextView) findViewById(R.id.errorLabel)) // TextView within your error member group that you want to change
+                .setProgressLabel((TextView) findViewById(R.id.progressLabel)) // TextView within your progress member group that you want to change
+                .addEmptyView(findViewById(R.id.emptyView)) //empty placeholder member
+                .setAnimDuration(800)
                 .build();
 
         ColorAdapter adapter = new ColorAdapter(this);
@@ -53,11 +54,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onProgress() {
-        switcher.showProgressView("Loading data. Please wait.");
+        switcher.showProgressView();
         Observable.just(new Object())
-                .delay(1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
+                .delaySubscription(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Subscriber<Object>() {
                     @Override
                     public void onCompleted() {
@@ -77,20 +78,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onError() {
-        switcher.showProgressView("Loading data. Please wait.");
+        switcher.showProgressView();
         Observable.just(new Object())
-                .delay(1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.newThread())
+                .delaySubscription(2, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Object>() {
                     @Override
                     public void onCompleted() {
-                        switcher.showErrorView("Error. Click this to make it disappear.", new OnErrorViewListener() {
-                            @Override
-                            public void onErrorViewClicked() {
-                                switcher.showContentView();
-                            }
-                        });
+                        switcher.showErrorView();
                     }
 
                     @Override
@@ -105,6 +101,15 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    @OnClick(R.id.dismissErrorButton)
+    public void onDismissErrorClicked() {
+        switcher.showContentView();
+    }
+
+    @OnClick(R.id.dismissEmptyButton)
+    public void onDismissEmptyClicked() {
+        switcher.showContentView();
+    }
 
     public void onEmpty() {
         switcher.showEmptyView();
