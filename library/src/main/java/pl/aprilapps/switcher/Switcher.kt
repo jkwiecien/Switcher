@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.content.Context
 import android.view.View
 import android.widget.TextView
+import java.lang.IllegalStateException
 
 /**
  * Created by Jacek Kwiecień on 04.03.2017.
@@ -23,13 +24,15 @@ open class Switcher(context: Context) {
     val runningAnimations = mutableSetOf<Animator>()
 
     fun showContentView() {
-        finishRunningAnimations()
+        val screenStateCheck = finishRunningAnimations()
+        if (!screenStateCheck) return
         contentViews.forEach { fadeInView(it, animationDuration) }
         allNonContentViews().filter { it.visibility == View.VISIBLE }.forEach { fadeOutView(it, animationDuration) }
     }
 
     fun showContentViewImmediately() {
-        finishRunningAnimations()
+        val screenStateCheck = finishRunningAnimations()
+        if (!screenStateCheck) return
         contentViews.forEach { it.visibility = View.VISIBLE }
         allNonContentViews().filter { it.visibility == View.VISIBLE }.forEach { it.visibility = invisibleState }
     }
@@ -43,14 +46,16 @@ open class Switcher(context: Context) {
     }
 
     fun showProgressView(progressMessage: String?) {
-        finishRunningAnimations()
+        val screenStateCheck = finishRunningAnimations()
+        if (!screenStateCheck) return
         progressViews.forEach { fadeInView(it, animationDuration) }
         progressMessage?.let { progressLabel?.let { errorLabel!!.text = progressMessage } }
         allNonProgressViews().filter { it.visibility == View.VISIBLE }.forEach { fadeOutView(it, animationDuration) }
     }
 
     fun showProgressViewImmediately(progressMessage: String?) {
-        finishRunningAnimations()
+        val screenStateCheck = finishRunningAnimations()
+        if (!screenStateCheck) return
         progressViews.forEach { it.visibility = View.VISIBLE }
         progressMessage?.let { progressLabel?.let { errorLabel!!.text = progressMessage } }
         allNonProgressViews().filter { it.visibility == View.VISIBLE }.forEach { it.visibility = invisibleState }
@@ -65,27 +70,31 @@ open class Switcher(context: Context) {
     }
 
     fun showErrorView(errorMessage: String?) {
-        finishRunningAnimations()
+        val screenStateCheck = finishRunningAnimations()
+        if (!screenStateCheck) return
         errorViews.forEach { fadeInView(it, animationDuration) }
         errorMessage?.let { errorLabel?.let { errorLabel!!.text = errorMessage } }
         allNonErrorViews().filter { it.visibility == View.VISIBLE }.forEach { fadeOutView(it, animationDuration) }
     }
 
     fun showErrorViewImmediately(errorMessage: String?) {
-        finishRunningAnimations()
+        val screenStateCheck = finishRunningAnimations()
+        if (!screenStateCheck) return
         errorViews.forEach { it.visibility = View.VISIBLE }
         errorMessage?.let { errorLabel?.let { errorLabel!!.text = errorMessage } }
         allNonErrorViews().filter { it.visibility == View.VISIBLE }.forEach { it.visibility = invisibleState }
     }
 
     fun showEmptyView() {
-        finishRunningAnimations()
+        val screenStateCheck = finishRunningAnimations()
+        if (!screenStateCheck) return
         emptyViews.forEach { fadeInView(it, animationDuration) }
         allNonEmptyViews().filter { it.visibility == View.VISIBLE }.forEach { fadeOutView(it, animationDuration) }
     }
 
     fun showEmptyViewImmediately() {
-        finishRunningAnimations()
+        val screenStateCheck = finishRunningAnimations()
+        if (!screenStateCheck) return
         emptyViews.forEach { it.visibility = View.VISIBLE }
         allNonEmptyViews().filter { it.visibility == View.VISIBLE }.forEach { it.visibility = invisibleState }
     }
@@ -122,8 +131,14 @@ open class Switcher(context: Context) {
         return set
     }
 
-    private fun finishRunningAnimations() {
-        runningAnimations.forEach(Animator::end)
+    private fun finishRunningAnimations(): Boolean {
+        try {
+            runningAnimations.forEach(Animator::end)
+            return true
+        } catch (illegalStateException: IllegalStateException) {
+            illegalStateException.printStackTrace()
+            return false
+        }
     }
 
     private fun setupViewsInitialVisibility() {
