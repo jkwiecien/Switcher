@@ -29,17 +29,15 @@ open class Switcher(context: Context) {
     }
 
     fun showContentView() {
-        if (areAllContentViewsVisible()) return
         val screenStateCheck = finishRunningAnimations()
-        if (!screenStateCheck) return
+        if (!screenStateCheck || areAllContentViewsVisible()) return
         contentViews.forEach { fadeInView(it, animationDuration) }
         allNonContentViews().filter { it.visibility == View.VISIBLE }.forEach { fadeOutView(it, animationDuration) }
     }
 
     fun showContentViewImmediately() {
-        if (areAllContentViewsVisible()) return
         val screenStateCheck = finishRunningAnimations()
-        if (!screenStateCheck) return
+        if (!screenStateCheck || areAllContentViewsVisible()) return
         contentViews.forEach { it.visibility = View.VISIBLE }
         allNonContentViews().filter { it.visibility == View.VISIBLE }.forEach { it.visibility = invisibleState }
     }
