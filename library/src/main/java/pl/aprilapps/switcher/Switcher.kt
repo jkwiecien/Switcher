@@ -23,7 +23,13 @@ open class Switcher(context: Context) {
 
     val runningAnimations = mutableSetOf<Animator>()
 
+    private fun areAllContentViewsVisible(): Boolean {
+        contentViews.forEach { if (it.visibility != View.VISIBLE) return false }
+        return true
+    }
+
     fun showContentView() {
+        if (areAllContentViewsVisible()) return
         val screenStateCheck = finishRunningAnimations()
         if (!screenStateCheck) return
         contentViews.forEach { fadeInView(it, animationDuration) }
@@ -31,6 +37,7 @@ open class Switcher(context: Context) {
     }
 
     fun showContentViewImmediately() {
+        if (areAllContentViewsVisible()) return
         val screenStateCheck = finishRunningAnimations()
         if (!screenStateCheck) return
         contentViews.forEach { it.visibility = View.VISIBLE }
