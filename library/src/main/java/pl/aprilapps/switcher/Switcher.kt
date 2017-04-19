@@ -2,6 +2,7 @@ package pl.aprilapps.switcher
 
 import android.animation.Animator
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import java.lang.IllegalStateException
@@ -18,6 +19,7 @@ open class Switcher(context: Context) {
     private var progressLabel: TextView? = null
     private var errorLabel: TextView? = null
     private var invisibleState = View.INVISIBLE
+    private var logsEnabled = false
 
     var animationDuration = context.resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
 
@@ -28,7 +30,16 @@ open class Switcher(context: Context) {
         return true
     }
 
+    private fun printLog(message: String) {
+        if (logsEnabled) Log.v(javaClass.simpleName, message)
+    }
+
+    private fun printErrorLog(message: String) {
+        if (logsEnabled) Log.e(javaClass.simpleName, message)
+    }
+
     fun showContentView() {
+        printLog("Showing content immediately")
         val screenStateCheck = finishRunningAnimations()
         if (!screenStateCheck || areAllContentViewsVisible()) return
         contentViews.forEach { fadeInView(it, animationDuration) }
@@ -36,6 +47,7 @@ open class Switcher(context: Context) {
     }
 
     fun showContentViewImmediately() {
+        printLog("Showing content immediately")
         val screenStateCheck = finishRunningAnimations()
         if (!screenStateCheck || areAllContentViewsVisible()) return
         contentViews.forEach { it.visibility = View.VISIBLE }
@@ -47,10 +59,12 @@ open class Switcher(context: Context) {
     }
 
     fun showProgressViewImmediately() {
+        printLog("Showing progress immediately")
         showProgressViewImmediately(null)
     }
 
     fun showProgressView(progressMessage: String?) {
+        printLog("Showing progress")
         val screenStateCheck = finishRunningAnimations()
         if (!screenStateCheck) return
         progressViews.forEach { fadeInView(it, animationDuration) }
@@ -59,6 +73,7 @@ open class Switcher(context: Context) {
     }
 
     fun showProgressViewImmediately(progressMessage: String?) {
+        printLog("Showing progress immediately")
         val screenStateCheck = finishRunningAnimations()
         if (!screenStateCheck) return
         progressViews.forEach { it.visibility = View.VISIBLE }
@@ -67,14 +82,17 @@ open class Switcher(context: Context) {
     }
 
     fun showErrorView() {
+        printLog("Showing error")
         showErrorView(null)
     }
 
     fun showErrorViewImmediately() {
+        printLog("Showing error immediately")
         showErrorViewImmediately(null)
     }
 
     fun showErrorView(errorMessage: String?) {
+        printLog("Showing error")
         val screenStateCheck = finishRunningAnimations()
         if (!screenStateCheck) return
         errorViews.forEach { fadeInView(it, animationDuration) }
@@ -83,6 +101,7 @@ open class Switcher(context: Context) {
     }
 
     fun showErrorViewImmediately(errorMessage: String?) {
+        printLog("Showing error immediately")
         val screenStateCheck = finishRunningAnimations()
         if (!screenStateCheck) return
         errorViews.forEach { it.visibility = View.VISIBLE }
@@ -91,6 +110,7 @@ open class Switcher(context: Context) {
     }
 
     fun showEmptyView() {
+        printLog("Showing empty view")
         val screenStateCheck = finishRunningAnimations()
         if (!screenStateCheck) return
         emptyViews.forEach { fadeInView(it, animationDuration) }
@@ -98,6 +118,7 @@ open class Switcher(context: Context) {
     }
 
     fun showEmptyViewImmediately() {
+        printLog("Showing empty view immediately")
         val screenStateCheck = finishRunningAnimations()
         if (!screenStateCheck) return
         emptyViews.forEach { it.visibility = View.VISIBLE }
@@ -138,20 +159,24 @@ open class Switcher(context: Context) {
 
     private fun finishRunningAnimations(): Boolean {
         try {
+            printLog("Attempt to finish running animations. Currently running: " + runningAnimations.size)
             runningAnimations.forEach(Animator::end)
             return true
-        } catch (illegalStateException: IllegalStateException) {
-            illegalStateException.printStackTrace()
+        } catch (error: IllegalStateException) {
+            printErrorLog(error.message ?: "IllegalStateException - no message")
             return false
         }
     }
 
     private fun setupViewsInitialVisibility() {
+        printLog("=======================================")
+        printLog("Building Switcher. Content views: " + contentViews.size + ", error views: " + errorViews.size + ", progress views: " + progressViews.size + ", empty views: " + emptyViews.size)
         allNonContentViews().forEach { it.visibility = invisibleState }
         contentViews.forEach { it.visibility = View.VISIBLE }
     }
 
     private fun fadeInView(view: View, animationDuration: Long) {
+        printLog("Fading IN view: " + view.toString())
         view.visibility = View.VISIBLE
         view.alpha = 0f
 
@@ -161,6 +186,7 @@ open class Switcher(context: Context) {
             }
 
             override fun onAnimationEnd(animator: Animator) {
+                printLog("fade IN animation ENDED: " + animator.toString())
                 val iterator = runningAnimations.iterator()
                 iterator.takeIf { it == animator }?.forEach { iterator.remove() }
             }
@@ -169,6 +195,7 @@ open class Switcher(context: Context) {
             }
 
             override fun onAnimationStart(animator: Animator) {
+                printLog("fade IN animation STARTED: " + animator.toString())
                 runningAnimations.add(animator)
             }
         })
@@ -181,6 +208,7 @@ open class Switcher(context: Context) {
             }
 
             override fun onAnimationEnd(animator: Animator) {
+                printLog("fade OUT animation ENDED: " + animator.toString())
                 val iterator = runningAnimations.iterator()
                 iterator.takeIf { it == animator }?.forEach { iterator.remove() }
                 view.visibility = invisibleState
@@ -190,6 +218,7 @@ open class Switcher(context: Context) {
             }
 
             override fun onAnimationStart(animator: Animator) {
+                printLog("fade OUT animation STARTED: " + animator.toString())
                 runningAnimations.add(animator)
             }
         })
@@ -241,6 +270,11 @@ open class Switcher(context: Context) {
         fun addEmptyView(view: View): Builder {
             if (view == null) throw NullPointerException("Non-null param cannot be null")
             switcher.emptyViews.add(view)
+            return this
+        }
+
+        fun setLogsEnabled(enabled: Boolean): Builder {
+            switcher.logsEnabled = enabled
             return this
         }
 
