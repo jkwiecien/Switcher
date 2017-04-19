@@ -30,6 +30,11 @@ open class Switcher(context: Context) {
         return true
     }
 
+    private fun areAllProgressViewsVisible(): Boolean {
+        progressViews.forEach { if (it.visibility != View.VISIBLE) return false }
+        return true
+    }
+
     private fun printLog(message: String) {
         if (logsEnabled) Log.v(javaClass.simpleName, message)
     }
@@ -39,19 +44,19 @@ open class Switcher(context: Context) {
     }
 
     fun showContentView() {
-        printLog("Showing content immediately")
         val screenStateCheck = finishRunningAnimations()
         if (!screenStateCheck || areAllContentViewsVisible()) return
+        printLog("Showing content immediately")
         contentViews.forEach { fadeInView(it, animationDuration) }
         allNonContentViews().filter { it.visibility == View.VISIBLE }.forEach { fadeOutView(it, animationDuration) }
     }
 
     fun showContentViewImmediately() {
-        printLog("Showing content immediately")
         val screenStateCheck = finishRunningAnimations()
         if (!screenStateCheck || areAllContentViewsVisible()) return
-        contentViews.forEach { it.visibility = View.VISIBLE }
-        allNonContentViews().filter { it.visibility == View.VISIBLE }.forEach { it.visibility = invisibleState }
+        printLog("Showing content immediately")
+        contentViews.forEach { fadeInView(it, 0) }
+        allNonContentViews().filter { it.visibility == View.VISIBLE }.forEach { fadeOutView(it, 0) }
     }
 
     fun showProgressView() {
@@ -59,68 +64,65 @@ open class Switcher(context: Context) {
     }
 
     fun showProgressViewImmediately() {
-        printLog("Showing progress immediately")
         showProgressViewImmediately(null)
     }
 
     fun showProgressView(progressMessage: String?) {
-        printLog("Showing progress")
         val screenStateCheck = finishRunningAnimations()
-        if (!screenStateCheck) return
+        if (!screenStateCheck || areAllProgressViewsVisible()) return
+        printLog("Showing progress")
         progressViews.forEach { fadeInView(it, animationDuration) }
         progressMessage?.let { progressLabel?.let { errorLabel!!.text = progressMessage } }
         allNonProgressViews().filter { it.visibility == View.VISIBLE }.forEach { fadeOutView(it, animationDuration) }
     }
 
     fun showProgressViewImmediately(progressMessage: String?) {
-        printLog("Showing progress immediately")
         val screenStateCheck = finishRunningAnimations()
-        if (!screenStateCheck) return
-        progressViews.forEach { it.visibility = View.VISIBLE }
+        if (!screenStateCheck || areAllProgressViewsVisible()) return
+        printLog("Showing progress immediately")
+        progressViews.forEach { fadeInView(it, 0) }
         progressMessage?.let { progressLabel?.let { errorLabel!!.text = progressMessage } }
-        allNonProgressViews().filter { it.visibility == View.VISIBLE }.forEach { it.visibility = invisibleState }
+        allNonProgressViews().filter { it.visibility == View.VISIBLE }.forEach { fadeOutView(it, 0) }
     }
 
     fun showErrorView() {
-        printLog("Showing error")
         showErrorView(null)
     }
 
     fun showErrorViewImmediately() {
-        printLog("Showing error immediately")
         showErrorViewImmediately(null)
     }
 
     fun showErrorView(errorMessage: String?) {
-        printLog("Showing error")
         val screenStateCheck = finishRunningAnimations()
         if (!screenStateCheck) return
+        printLog("Showing error")
         errorViews.forEach { fadeInView(it, animationDuration) }
         errorMessage?.let { errorLabel?.let { errorLabel!!.text = errorMessage } }
         allNonErrorViews().filter { it.visibility == View.VISIBLE }.forEach { fadeOutView(it, animationDuration) }
     }
 
     fun showErrorViewImmediately(errorMessage: String?) {
-        printLog("Showing error immediately")
         val screenStateCheck = finishRunningAnimations()
         if (!screenStateCheck) return
-        errorViews.forEach { it.visibility = View.VISIBLE }
+        printLog("Showing error immediately")
+        errorViews.forEach { fadeInView(it, 0) }
         errorMessage?.let { errorLabel?.let { errorLabel!!.text = errorMessage } }
-        allNonErrorViews().filter { it.visibility == View.VISIBLE }.forEach { it.visibility = invisibleState }
+        allNonErrorViews().filter { it.visibility == View.VISIBLE }.forEach { fadeOutView(it, 0) }
     }
 
     fun showEmptyView() {
-        printLog("Showing empty view")
         val screenStateCheck = finishRunningAnimations()
         if (!screenStateCheck) return
+        printLog("Showing empty view")
         emptyViews.forEach { fadeInView(it, animationDuration) }
         allNonEmptyViews().filter { it.visibility == View.VISIBLE }.forEach { fadeOutView(it, animationDuration) }
     }
 
     fun showEmptyViewImmediately() {
-        printLog("Showing empty view immediately")
         val screenStateCheck = finishRunningAnimations()
         if (!screenStateCheck) return
+        printLog("Showing empty view immediately")
         emptyViews.forEach { it.visibility = View.VISIBLE }
         allNonEmptyViews().filter { it.visibility == View.VISIBLE }.forEach { it.visibility = invisibleState }
     }
