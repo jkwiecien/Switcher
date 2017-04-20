@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 .setErrorLabel((TextView) findViewById(R.id.errorLabel)) // TextView within your error member group that you want to change
                 .setProgressLabel((TextView) findViewById(R.id.progressLabel)) // TextView within your progress member group that you want to change
                 .addEmptyView(findViewById(R.id.emptyView)) //empty placeholder member
-                .setAnimDuration(600)
+                .setAnimDuration(400)
                 .setLogsEnabled(true)
                 .build();
 
@@ -55,11 +55,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onProgress() {
-        switcher.showProgressView();
+        switcher.showProgressViewImmediately();
         Observable.just(new Object())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .delaySubscription(300, TimeUnit.MILLISECONDS)
+                .delaySubscription(800, TimeUnit.MILLISECONDS)
                 .subscribe(new Subscriber<Object>() {
                     @Override
                     public void onCompleted() {
