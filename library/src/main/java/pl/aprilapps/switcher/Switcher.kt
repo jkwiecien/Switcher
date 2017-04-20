@@ -26,6 +26,7 @@ open class Switcher(context: Context) {
     var animationDuration = context.resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
 
     var animatorSet = AnimatorSet()
+    val runningAnimators = mutableListOf<Animator>()
 
     private fun areAllContentViewsVisible(): Boolean {
         contentViews.forEach { if (it.visibility != View.VISIBLE) return false }
@@ -38,18 +39,19 @@ open class Switcher(context: Context) {
     }
 
     private fun areAllErrorViewsVisible(): Boolean {
-        progressViews.forEach { if (it.visibility != View.VISIBLE) return false }
+        errorViews.forEach { if (it.visibility != View.VISIBLE) return false }
         return true
     }
 
     private fun areAllEmptyViewsVisible(): Boolean {
-        progressViews.forEach { if (it.visibility != View.VISIBLE) return false }
+        emptyViews.forEach { if (it.visibility != View.VISIBLE) return false }
         return true
     }
 
     fun startAnimationsPackage(animators: List<Animator>) {
-        printLog("ENDING currently running animations: " + (animatorSet.listeners?.size ?: 0))
-        animatorSet.end()
+        printLog("ENDING currently running animations: " + runningAnimators.size)
+        runningAnimators.forEach { it.end() }
+        runningAnimators.clear()
         animatorSet = AnimatorSet()
         animatorSet.playTogether(animators)
         printLog("STARTING animations package: " + animators.size + " animators.")
@@ -74,6 +76,8 @@ open class Switcher(context: Context) {
         animator.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animator: Animator) {
                 animator.removeAllListeners()
+                val iterator = runningAnimators.iterator()
+                iterator.takeIf { it == animator }?.forEach { iterator.remove() }
                 printLog("fade IN animation ENDED: " + animator.toString())
             }
 
@@ -81,8 +85,9 @@ open class Switcher(context: Context) {
                 printLog("fade IN animation STARTED: " + animator.toString())
                 view.visibility = View.VISIBLE
             }
-
         })
+
+        runningAnimators.add(animator)
         return animator
     }
 
@@ -92,6 +97,8 @@ open class Switcher(context: Context) {
 
             override fun onAnimationEnd(animator: Animator) {
                 animator.removeAllListeners()
+                val iterator = runningAnimators.iterator()
+                iterator.takeIf { it == animator }?.forEach { iterator.remove() }
                 printLog("fade OUT animation ENDED: " + animator.toString())
                 view.visibility = invisibleState
             }
@@ -99,8 +106,9 @@ open class Switcher(context: Context) {
             override fun onAnimationStart(animator: Animator) {
                 printLog("fade OUT animation STARTED: " + animator.toString())
             }
-
         })
+
+        runningAnimators.add(animator)
         return animator
     }
 
