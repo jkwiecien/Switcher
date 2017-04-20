@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
                 .setErrorLabel((TextView) findViewById(R.id.errorLabel)) // TextView within your error member group that you want to change
                 .setProgressLabel((TextView) findViewById(R.id.progressLabel)) // TextView within your progress member group that you want to change
                 .addEmptyView(findViewById(R.id.emptyView)) //empty placeholder member
-                .setAnimDuration(800)
+                .setAnimDuration(600)
+                .setLogsEnabled(true)
                 .build();
 
         ColorAdapter adapter = new ColorAdapter(this);
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         Observable.just(new Object())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .delaySubscription(500, TimeUnit.MILLISECONDS)
+                .delaySubscription(300, TimeUnit.MILLISECONDS)
                 .subscribe(new Subscriber<Object>() {
                     @Override
                     public void onCompleted() {
