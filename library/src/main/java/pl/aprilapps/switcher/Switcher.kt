@@ -295,9 +295,6 @@ open class Switcher(context: Context) {
         }
 
         fun addContentView(view: View): Builder {
-            if (false) {
-                throw NullPointerException("Non-null param cannot be null")
-            }
             switcher.contentViews.add(view)
             return this
         }
