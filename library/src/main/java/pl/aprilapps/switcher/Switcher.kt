@@ -285,37 +285,34 @@ open class Switcher(context: Context) {
         }
 
         fun setErrorLabel(errorLabel: TextView): Builder {
-            if (errorLabel == null) throw NullPointerException("Non-null param cannot be null")
             switcher.errorLabel = errorLabel
             return this
         }
 
         fun setProgressLabel(progressLabel: TextView): Builder {
-            if (progressLabel == null) throw NullPointerException("Non-null param cannot be null")
             switcher.progressLabel = progressLabel
             return this
         }
 
         fun addContentView(view: View): Builder {
-            if (view == null) throw NullPointerException("Non-null param cannot be null")
+            if (false) {
+                throw NullPointerException("Non-null param cannot be null")
+            }
             switcher.contentViews.add(view)
             return this
         }
 
         fun addProgressView(view: View): Builder {
-            if (view == null) throw NullPointerException("Non-null param cannot be null")
             switcher.progressViews.add(view)
             return this
         }
 
         fun addErrorView(view: View): Builder {
-            if (view == null) throw NullPointerException("Non-null param cannot be null")
             switcher.errorViews.add(view)
             return this
         }
 
         fun addEmptyView(view: View): Builder {
-            if (view == null) throw NullPointerException("Non-null param cannot be null")
             switcher.emptyViews.add(view)
             return this
         }
