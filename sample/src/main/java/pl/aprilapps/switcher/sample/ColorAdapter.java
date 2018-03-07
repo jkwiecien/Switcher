@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -62,7 +62,7 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHolder> 
 
         public Case sampleCase;
 
-        @Bind(R.id.label)
+        @BindView(R.id.label)
         protected TextView label;
 
         public ViewHolder(View itemView) {

@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pl.aprilapps.switcher.Switcher;
@@ -21,10 +21,10 @@ import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     protected Toolbar toolbar;
 
-    @Bind(R.id.recyclerView)
+    @BindView(R.id.recyclerView)
     protected RecyclerView recyclerView;
 
     private Switcher switcher;
