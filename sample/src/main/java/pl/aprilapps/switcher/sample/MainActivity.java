@@ -1,17 +1,14 @@
 package pl.aprilapps.switcher.sample;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import pl.aprilapps.switcher.Switcher;
 import rx.Observable;
 import rx.Subscriber;
@@ -21,21 +18,16 @@ import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar)
-    protected Toolbar toolbar;
-
-    @Bind(R.id.recyclerView)
-    protected RecyclerView recyclerView;
-
     private Switcher switcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
+        setSupportActionBar(findViewById(R.id.toolbar));
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         switcher = new Switcher.Builder(this)
                 .addContentView(findViewById(R.id.recyclerView)) //content member
@@ -52,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
         ColorAdapter adapter = new ColorAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        findViewById(R.id.dismissErrorButton).setOnClickListener(view -> {
+            switcher.showContentView();
+        });
+
     }
 
     public void onProgress() {
@@ -100,16 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-    }
-
-    @OnClick(R.id.dismissErrorButton)
-    public void onDismissErrorClicked() {
-        switcher.showContentView();
-    }
-
-    @OnClick(R.id.dismissEmptyButton)
-    public void onDismissEmptyClicked() {
-        switcher.showContentView();
     }
 
     public void onEmpty() {

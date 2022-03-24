@@ -1,14 +1,10 @@
 package pl.aprilapps.switcher.sample;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Jacek Kwiecień on 08.10.2015.
@@ -61,28 +57,26 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public Case sampleCase;
-
-        @Bind(R.id.label)
         protected TextView label;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
 
-        @OnClick(R.id.cell)
-        protected void onCellClicked() {
-            switch (sampleCase) {
-                case PROGRESS:
-                    activity.onProgress();
-                    break;
-                case ERROR:
-                    activity.onError();
-                    break;
-                default:
-                    activity.onEmpty();
-                    break;
-            }
+            label = itemView.findViewById(R.id.label);
+
+            itemView.findViewById(R.id.cell).setOnClickListener(view -> {
+                switch (sampleCase) {
+                    case PROGRESS:
+                        activity.onProgress();
+                        break;
+                    case ERROR:
+                        activity.onError();
+                        break;
+                    default:
+                        activity.onEmpty();
+                        break;
+                }
+            });
         }
     }
 }
